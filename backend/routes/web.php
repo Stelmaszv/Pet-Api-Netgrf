@@ -23,3 +23,4 @@ Route::put('api/pets/{id}', [ApiPetController::class, 'update']);
 Route::delete('api/pets/{id}', [ApiPetController::class, 'destroy']);
 Route::get('api/pets/{id}', [ApiPetController::class, 'show']);
 Route::get('api/categories', [ApiCategoryController::class, 'all']);
+Route::get('api/categories/{id}', [ApiCategoryController::class, 'show']);

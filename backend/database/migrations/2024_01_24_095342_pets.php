@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->timestamps();
         });
-
+    
         Schema::create('pets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained('categories');
+            $table->foreignId('category_id')->nullable()->constrained()->default(1);
             $table->string('name');
             $table->string('status');
             $table->timestamps();

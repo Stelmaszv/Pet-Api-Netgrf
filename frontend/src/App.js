@@ -9,20 +9,53 @@ function App() {
   const [editingPetId, setEditingPetId] = useState(null);
   const [newPet, setNewPet] = useState({
     name: '',
-    status: ''
+    status: '',
+    category_id: '',
   });
+  const [categories, setCategories] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     fetchPets();
+    fetchCategories();
   }, []);
 
   const fetchPets = async () => {
     try {
       const response = await axios.get(API_URL);
-      setPets(response.data['data']);
+      const petsData = response.data['data'];
+
+      // Pobierz nazwy kategorii dla każdego zwierzaka
+      const petsWithCategories = await Promise.all(
+        petsData.map(async (pet) => {
+          const categoryName = await getCategoryName(pet.category_id);
+          return { ...pet, categoryName };
+        })
+      );
+
+      setPets(petsWithCategories);
     } catch (error) {
       console.error('Error fetching data:', error);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/categories');
+      setCategories(response.data['data']);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  const getCategoryName = async (categoryId) => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/categories/${categoryId}`);
+      const category = response.data['data'];
+      return category ? category.name : 'Brak kategorii';
+    } catch (error) {
+      console.error('Error fetching category:', error);
+      return 'Brak kategorii';
     }
   };
 
@@ -36,7 +69,7 @@ function App() {
 
   const handleAddPet = async () => {
     try {
-      if (!newPet.name || !newPet.status) {
+      if (!newPet.name || !newPet.status || !newPet.category_id) {
         setShowAlert(true);
         return;
       }
@@ -74,6 +107,7 @@ function App() {
       setNewPet({
         name: '',
         status: '',
+        category_id: '',
       });
 
       setShowAlert(false);
@@ -88,6 +122,7 @@ function App() {
     setNewPet({
       name: editingPet.name,
       status: editingPet.status,
+      category_id: editingPet.category_id,
     });
 
     setEditingPetId(petId);
@@ -109,7 +144,7 @@ function App() {
         <ul className="list-group">
           {pets.map((pet) => (
             <li key={pet.id} className="list-group-item">
-              {pet.name} - {pet.status}
+              {pet.name} - {pet.status} - {pet.categoryName}
               <button
                 className="btn btn-info ms-2"
                 onClick={() => handleEditPet(pet.id)}
@@ -158,9 +193,25 @@ function App() {
             <option value="w trakcie">W trakcie</option>
           </select>
         </div>
+        <div className="mb-3">
+          <label className="form-label">Kategoria:</label>
+          <select
+            className="form-select"
+            name="category_id"
+            value={newPet.category_id}
+            onChange={handleInputChange}
+          >
+            <option value="">Wybierz kategorię</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
         {showAlert && (
           <div className="alert alert-danger" role="alert">
-            Proszę wypełnić wszystkie pola (Nazwa i Status)!
+            Proszę wypełnić wszystkie pola (Nazwa, Status i Kategoria)!
           </div>
         )}
         <button
