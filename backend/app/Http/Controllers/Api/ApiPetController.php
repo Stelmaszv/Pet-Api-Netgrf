@@ -9,32 +9,45 @@ use Illuminate\Http\JsonResponse;
 
 class ApiPetController extends Controller
 {
-    public function all()
+    /**
+     * Get all pets.
+     *
+     * @return JsonResponse
+     */
+    public function all(): JsonResponse
     {
         return response()->json(['data' => Pets::all()]);
     }
 
-    public function store(Request $request)
+    /**
+     * Store a new pet.
+     *
+     * @param  Request  $request
+     * @return JsonResponse
+     */
+    public function store(Request $request): JsonResponse
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'status' => 'required|string|in:wyleczony,leczenie|max:255',
             'category_id' => 'required|exists:categories,id'
         ]);
-    
-        $pets = Pets::create([
-            'name' => $request->input('name'),
-            'status' => $request->input('status'),
-            'category_id' => $request->input('category_id')
-        ]);
-    
+
+        $pets = Pets::create($validatedData);
+
         return response()->json(['data' => $pets], 201);
     }
-    
 
+    /**
+     * Update an existing pet.
+     *
+     * @param  Request  $request
+     * @param  int  $id
+     * @return JsonResponse
+     */
     public function update(Request $request, $id): JsonResponse
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'status' => 'required|string|in:wyleczony,leczenie|max:255',
             'category_id' => 'required|exists:categories,id'
@@ -46,15 +59,17 @@ class ApiPetController extends Controller
             return response()->json(['error' => 'Pet not found'], 404);
         }
 
-        $pets->update([
-            'name' => $request->input('name'),
-            'status' => $request->input('status'),
-            'category_id' => $request->input('category_id')
-        ]);
+        $pets->update($validatedData);
 
         return response()->json(['data' => $pets], 200);
     }
 
+    /**
+     * Delete a pet.
+     *
+     * @param  int  $id
+     * @return JsonResponse
+     */
     public function destroy($id): JsonResponse
     {
         $pets = Pets::find($id);
@@ -68,6 +83,12 @@ class ApiPetController extends Controller
         return response()->json(['message' => 'Pet deleted successfully'], 200);
     }
 
+    /**
+     * Get details of a specific pet.
+     *
+     * @param  int  $id
+     * @return JsonResponse
+     */
     public function show($id): JsonResponse
     {
         $pets = Pets::find($id);
