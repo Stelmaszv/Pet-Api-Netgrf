@@ -188,9 +188,8 @@ function App() {
             value={newPet.status}
             onChange={handleInputChange}
           >
-            <option value="aktywne">Aktywne</option>
-            <option value="realizowane">Realizowane</option>
-            <option value="w trakcie">W trakcie</option>
+            <option value="wyleczony">wyleczony</option>
+            <option value="leczenie">leczenie</option>
           </select>
         </div>
         <div className="mb-3">
