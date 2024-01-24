@@ -19,7 +19,7 @@ return new class extends Migration
     
         Schema::create('pets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->nullable()->constrained()->default(1);
+            $table->foreignId('category_id')->nullable()->constrained();
             $table->string('name');
             $table->string('status');
             $table->timestamps();

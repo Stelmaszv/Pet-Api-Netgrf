@@ -24,7 +24,7 @@ function App() {
     try {
       const response = await axios.get(API_URL);
       const petsData = response.data['data'];
-      
+
       const petsWithCategories = await Promise.all(
         petsData.map(async (pet) => {
           const categoryName = await getCategoryName(pet.category_id);
@@ -67,6 +67,7 @@ function App() {
   };
 
   const handleAddPet = async () => {
+    console.log(newPet)
     try {
       if (!newPet.name || !newPet.status || !newPet.category_id) {
         setShowAlert(true);
@@ -187,6 +188,7 @@ function App() {
             value={newPet.status}
             onChange={handleInputChange}
           >
+            <option value="">Wybierz status</option>
             <option value="wyleczony">wyleczony</option>
             <option value="leczenie">leczenie</option>
           </select>
