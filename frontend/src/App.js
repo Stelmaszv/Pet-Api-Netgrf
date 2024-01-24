@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -10,6 +11,7 @@ function App() {
     name: '',
     status: '',
   });
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     fetchPets();
@@ -34,6 +36,11 @@ function App() {
 
   const handleAddPet = async () => {
     try {
+      if (!newPet.name || !newPet.status) {
+        setShowAlert(true);
+        return;
+      }
+
       if (editingPetId) {
         const response = await fetch(`${API_URL}/${editingPetId}`, {
           method: 'PUT',
@@ -68,13 +75,15 @@ function App() {
         name: '',
         status: '',
       });
+
+      setShowAlert(false);
     } catch (error) {
       console.error('Error adding/editing pet:', error);
     }
   };
 
   const handleEditPet = (petId) => {
-    const editingPet = pets.find(pet => pet.id === petId);
+    const editingPet = pets.find((pet) => pet.id === petId);
 
     setNewPet({
       name: editingPet.name,
@@ -85,25 +94,34 @@ function App() {
   };
 
   const handleDeletePet = async (petId) => {
-    try {  
+    try {
       const response = await axios.delete(`${API_URL}/${petId}`);
       fetchPets();
-  
     } catch (error) {
       console.error('Error deleting pet:', error);
     }
   };
 
   return (
-    <div>
+    <div className="container mt-4">
       <h1>Lista Zwierząt</h1>
       {Array.isArray(pets) ? (
-        <ul>
+        <ul className="list-group">
           {pets.map((pet) => (
-            <li key={pet.id}>
+            <li key={pet.id} className="list-group-item">
               {pet.name} - {pet.status}
-              <button onClick={() => handleEditPet(pet.id)}>Edytuj</button>
-              <button onClick={() => handleDeletePet(pet.id)}>Usuń</button>
+              <button
+                className="btn btn-info ms-2"
+                onClick={() => handleEditPet(pet.id)}
+              >
+                Edytuj
+              </button>
+              <button
+                className="btn btn-danger ms-2"
+                onClick={() => handleDeletePet(pet.id)}
+              >
+                Usuń
+              </button>
             </li>
           ))}
         </ul>
@@ -111,20 +129,43 @@ function App() {
         <p>Dane nie są w formie tablicy.</p>
       )}
 
-      <h2>Dodaj Nowego Zwierzaka</h2>
+      <h2>
+        {editingPetId
+          ? `Edytuj Zwierzaka: ${newPet.name}`
+          : 'Dodaj Nowego Zwierzaka'}
+      </h2>
       <form>
-        <label>
-          Nazwa:
-          <input type="text" name="name" value={newPet.name} onChange={handleInputChange} />
-        </label>
-        <br />
-        <label>
-          Status:
-          <input type="text" name="status" value={newPet.status} onChange={handleInputChange} />
-        </label>
-        <br />
-        <button type="button" onClick={handleAddPet}>
-          Dodaj Zwierzaka
+        <div className="mb-3">
+          <label className="form-label">Nazwa:</label>
+          <input
+            type="text"
+            className="form-control"
+            name="name"
+            value={newPet.name}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Status:</label>
+          <input
+            type="text"
+            className="form-control"
+            name="status"
+            value={newPet.status}
+            onChange={handleInputChange}
+          />
+        </div>
+        {showAlert && (
+          <div className="alert alert-danger" role="alert">
+            Proszę wypełnić wszystkie pola (Nazwa i Status)!
+          </div>
+        )}
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={handleAddPet}
+        >
+          {editingPetId ? 'Edytuj Zwierzaka' : 'Dodaj Zwierzaka'}
         </button>
       </form>
     </div>
