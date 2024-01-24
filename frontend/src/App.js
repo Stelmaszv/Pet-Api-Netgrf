@@ -1,5 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState, useEffect } from 'react';
+import { Alert } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 
 const API_URL = 'http://127.0.0.1:8000/api/pets';
@@ -9,7 +10,7 @@ function App() {
   const [editingPetId, setEditingPetId] = useState(null);
   const [newPet, setNewPet] = useState({
     name: '',
-    status: '',
+    status: ''
   });
   const [showAlert, setShowAlert] = useState(false);
 
@@ -147,13 +148,16 @@ function App() {
         </div>
         <div className="mb-3">
           <label className="form-label">Status:</label>
-          <input
-            type="text"
-            className="form-control"
+          <select
+            className="form-select"
             name="status"
             value={newPet.status}
             onChange={handleInputChange}
-          />
+          >
+            <option value="aktywne">Aktywne</option>
+            <option value="realizowane">Realizowane</option>
+            <option value="w trakcie">W trakcie</option>
+          </select>
         </div>
         {showAlert && (
           <div className="alert alert-danger" role="alert">

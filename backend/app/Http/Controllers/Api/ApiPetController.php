@@ -18,7 +18,7 @@ class ApiPetController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'status' => 'required|string|max:255'
+            'status' => 'required|string|in:aktywne,realizowane,w trakcie|max:255'
         ]);
 
         $pets = Pets::create([
@@ -26,14 +26,14 @@ class ApiPetController extends Controller
             'status' => $request->input('status'),
         ]);
 
-        return response()->json(['data' => $pets], 201); // 201 Created
+        return response()->json(['data' => $pets], 201);
     }
 
     public function update(Request $request, $id): JsonResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'status' => 'required|string|max:255'
+            'status' => 'required|string|in:aktywne,realizowane,w trakcie|max:255'
         ]);
 
         $pets = Pets::find($id);
