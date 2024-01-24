@@ -25,7 +25,6 @@ function App() {
       const response = await axios.get(API_URL);
       const petsData = response.data['data'];
 
-      // Pobierz nazwy kategorii dla każdego zwierzaka
       const petsWithCategories = await Promise.all(
         petsData.map(async (pet) => {
           const categoryName = await getCategoryName(pet.category_id);
@@ -68,6 +67,7 @@ function App() {
   };
 
   const handleAddPet = async () => {
+    console.log(newPet)
     try {
       if (!newPet.name || !newPet.status || !newPet.category_id) {
         setShowAlert(true);
@@ -188,9 +188,9 @@ function App() {
             value={newPet.status}
             onChange={handleInputChange}
           >
-            <option value="aktywne">Aktywne</option>
-            <option value="realizowane">Realizowane</option>
-            <option value="w trakcie">W trakcie</option>
+            <option value="">Wybierz status</option>
+            <option value="wyleczony">wyleczony</option>
+            <option value="leczenie">leczenie</option>
           </select>
         </div>
         <div className="mb-3">

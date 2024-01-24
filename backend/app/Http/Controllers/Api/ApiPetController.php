@@ -18,7 +18,7 @@ class ApiPetController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'status' => 'required|string|in:aktywne,realizowane,w trakcie|max:255',
+            'status' => 'required|string|in:wyleczony,leczenie|max:255',
             'category_id' => 'required|exists:categories,id'
         ]);
     
@@ -36,7 +36,7 @@ class ApiPetController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'status' => 'required|string|in:aktywne,realizowane,w trakcie|max:255',
+            'status' => 'required|string|in:wyleczony,leczenie|max:255',
             'category_id' => 'required|exists:categories,id'
         ]);
 
