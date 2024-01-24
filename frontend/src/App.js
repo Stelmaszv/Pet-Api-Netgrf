@@ -24,8 +24,7 @@ function App() {
     try {
       const response = await axios.get(API_URL);
       const petsData = response.data['data'];
-
-      // Pobierz nazwy kategorii dla każdego zwierzaka
+      
       const petsWithCategories = await Promise.all(
         petsData.map(async (pet) => {
           const categoryName = await getCategoryName(pet.category_id);

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Api\ApiPetController;
 use App\Http\Controllers\Api\ApiCategoryController;
 
@@ -16,7 +17,7 @@ use App\Http\Controllers\Api\ApiCategoryController;
 |
 */
 
-Route::get('/', function () { return view('welcome'); });
+Route::get('/', [HomeController::class, 'home']);
 Route::get('api/pets', [ApiPetController::class, 'all']);
 Route::post('api/pets', [ApiPetController::class, 'store']);
 Route::put('api/pets/{id}', [ApiPetController::class, 'update']);
