@@ -7,7 +7,7 @@
     <meta name="description" content="Web site created using create-react-app"/>
     <link rel="apple-touch-icon" href="/logo192.png"/>
     <link rel="manifest" href="/manifest.json"/>
-    <title>React App</title>
+    <title>Pets Appi</title>
     <script defer="defer" src="/js/main.ee8c8ef8.js">
     </script><link href="/css/main.628e3091.css" rel="stylesheet"></head>
     <body><noscript>You need to enable JavaScript to run this app.</noscript>
