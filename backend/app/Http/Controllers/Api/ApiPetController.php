@@ -10,8 +10,6 @@ use Illuminate\Http\JsonResponse;
 class ApiPetController extends Controller
 {
     /**
-     * Get all pets.
-     *
      * @return JsonResponse
      */
     public function all(): JsonResponse
@@ -20,8 +18,6 @@ class ApiPetController extends Controller
     }
 
     /**
-     * Store a new pet.
-     *
      * @param  Request  $request
      * @return JsonResponse
      */
@@ -39,8 +35,6 @@ class ApiPetController extends Controller
     }
 
     /**
-     * Update an existing pet.
-     *
      * @param  Request  $request
      * @param  int  $id
      * @return JsonResponse
@@ -65,8 +59,6 @@ class ApiPetController extends Controller
     }
 
     /**
-     * Delete a pet.
-     *
      * @param  int  $id
      * @return JsonResponse
      */
@@ -84,8 +76,6 @@ class ApiPetController extends Controller
     }
 
     /**
-     * Get details of a specific pet.
-     *
      * @param  int  $id
      * @return JsonResponse
      */
